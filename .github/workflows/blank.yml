@@ -1,4 +1,4 @@
-name: Run Traffic Command with Playwright
+name: Run Traffic Command with Playwright and xvfb
 
 on:
   workflow_dispatch: # Allows manual triggering of the workflow
@@ -21,14 +21,20 @@ jobs:
         with:
           node-version: 16 # Specify your required Node.js version
 
-      # Step 3: Install project dependencies
+      # Step 3: Install system dependencies
+      - name: Install xvfb
+        run: sudo apt-get update && sudo apt-get install -y xvfb
+
+      # Step 4: Install project dependencies
       - name: Install project dependencies
         run: npm install
 
-      # Step 4: Install Playwright tools
+      # Step 5: Install Playwright tools
       - name: Install Playwright tools
         run: npx playwright install
 
-      # Step 5: Run the Traffic command
-      - name: Run traffic command
-        run: node traffic 1 https://pixelscan.net
+      # Step 6: Run the Traffic command with xvfb
+      - name: Run traffic command with xvfb
+        run: |
+          xvfb-run --auto-servernum --server-num=1 --server-args='-screen 0, 1920x1080x24' \
+          node traffic.js 1 https://pixelscan.net
