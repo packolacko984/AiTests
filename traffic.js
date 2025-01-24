@@ -367,7 +367,7 @@ const tasksPoll = async (views) => {
 
 const RunTasks = async () => {
   let views = 0;
-  for (let i = 0; i < 14534554; i++) {
+  for (let i = 0; i < 5; i++) {
     views++;
     console.log(views * Number(bots));
     await tasksPoll(views);
