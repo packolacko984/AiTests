@@ -1,0 +1,30 @@
+name: CI - Node.js and Playwright
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  setup-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16 # Change to your desired Node.js version
+
+      # Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Install Playwright
+      - name: Install Playwright
+        run: npx playwright install
