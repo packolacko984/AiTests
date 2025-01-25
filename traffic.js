@@ -2,7 +2,7 @@ import { chromium, firefox } from "playwright";
 import { newInjectedContext } from "fingerprint-injector";
 import { checkTz } from "./tz_px.js";
 
-const bots = 40
+const bots = 5
 const url = "https://pixelscan.net"
 
 function generateRandomNumber(min, max) {
@@ -350,7 +350,7 @@ const OpenBrowser = async (link, username) => {
 };
 
 const tasksPoll = async (views) => {
-  const tasks = Array.from({ length: 50 }).map(
+  const tasks = Array.from({ length: 5 }).map(
     () => {
       let location = locations[generateRandomNumber(0, locations.length + 1)];
       const username =
@@ -358,7 +358,7 @@ const tasksPoll = async (views) => {
         location +
         String(generateRandomNumber(10000, 10000000));
 
-      return OpenBrowser(url ? "https://pixelscan.net" : "https://www.google.com", username);
+      return OpenBrowser("https://www.google.com" , username);
     }
   );
 
