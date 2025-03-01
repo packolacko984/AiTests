@@ -97,39 +97,7 @@ const locations = [
   "fr", // France
   "fr", // France
   "fr", // France
-  "uk", // United Kingdom
-  "au", // Australia
-  "de", // Germany
-  "jp", // Japan
-  "sg", // Singapore
-  "kr", // South Korea
-  "it", // Italy
-  "es", // Spain
-  "in", // India
-  "id", // Indonesia
-  "ph", // Philippines
-  "th", // Thailand
-  "my", // Malaysia
-  "eg", // Egypt
-  "tr", // Turkey
-  "pk", // Pakistan (English speakers, strong internet growth)
-  "bd", // Bangladesh (growing internet users, relevance to global content)
-  "mx", // Mexico (geographical proximity, U.S. ties)
-  "lk", // Sri Lanka
-  "ml", // Mali
-  "bj", // Benin
-  "ug", // Uganda
-  "mm", // Myanmar
-  "no", // Norway
-  "pf", // French Polynesia
-  "np", // Nepal
-  "bf", // Burkina Faso
-  "cd", // Congo, The Democratic Republic of the
-  "bi", // Burundi
-  "gf", // French Guiana
-  "cf", // Central African Republic
-  "hk", // Hong Kong
-  "cg", // Congo
+
 ];
 
 // Function to select a random user preference
