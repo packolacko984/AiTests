@@ -32,7 +32,10 @@ jobs:
       # Step 5: Install Playwright tools
       - name: Install Playwright tools
         run: npx playwright install
-
+        
+      - name: Install missing dependencies
+        run: npm install generative-bayesian-network
+      
       # Step 6: Run the Traffic command with xvfb
       - name: Run traffic command with xvfb
         run: |
