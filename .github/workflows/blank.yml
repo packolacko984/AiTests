@@ -35,4 +35,6 @@ jobs:
 
       # Step 6: Run the Traffic command with xvfb
       - name: Run traffic command with xvfb
-        run: node traffic.js 1 https://countmytimee.site
+        run: |
+          xvfb-run --auto-servernum --server-num=1 --server-args='-screen 0, 1920x1080x24' \
+          node traffic.js 1 https://countmytimee.site
