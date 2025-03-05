@@ -1,11 +1,22 @@
 import axios from "axios";
 import { HttpsProxyAgent } from "https-proxy-agent";
+import "dotenv/config";
 
 export const checkTz = async (username) => {
+  const proxyHost = process.env.PROXY_SERVER;
+  const proxyPort = process.env.PROXY_PORT;
+  const proxyUsername = username;
+  const proxyPassword = process.env.PROXY_PASSWORD;
+
+  // Properly formatted proxy URL
+  const proxyUrl = `http://${proxyUsername}:${proxyPassword}@${proxyHost}:${proxyPort}`;
+  const proxyAgent = new HttpsProxyAgent(proxyUrl);
+
   try {
     const response = await axios.get(
       "https://worker-purple-wind-1de7.idrissimahdi2020.workers.dev/",
       {
+        httpsAgent: proxyAgent,
         timeout: 10000,
         headers: {
           "User-Agent":

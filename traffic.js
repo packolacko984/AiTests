@@ -1,9 +1,10 @@
-import { chromium, firefox } from "playwright";
+import { chromium } from "playwright";
 import { newInjectedContext } from "fingerprint-injector";
 import { checkTz } from "./tz_px.js";
+import "dotenv/config";
 
-const bots = 5
-const url = "https://pixelscan.net"
+const bots = process.argv[2];
+const url = process.argv[3];
 
 function generateRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -11,93 +12,103 @@ function generateRandomNumber(min, max) {
 
 const locations = [
   "se", // Sweden
-  "se", // Sweden
-  "se", // Sweden
-  "za", // South Africa
-  "za", // South Africa
-  "za", // South Africa
-  "za", // South Africa
-  "ng", // Nigeria
-  "ng", // Nigeria
-  "ng", // Nigeria
+
   "ng", // Nigeria
   "cm", // Cameroon
-  "cm", // Cameroon
-  "cm", // Cameroon
-  "cm", // Cameroon
+
   "ci", // Cote D'Ivoire
-  "ci", // Cote D'Ivoire
-  "ci", // Cote D'Ivoire
-  "ci", // Cote D'Ivoire
+
   "ua", // Ukraine
-  "ua", // Ukraine
-  "ua", // Ukraine
-  "ua", // Ukraine
+
   "at", // Austria
   "at", // Austria
-  "at", // Austria
-  "at", // Austria
-  "fr", // France
-  "fr", // France
-  "fr", // France
-  "fr", // France
-  "fr", // France
-  "fr", // France
-  "ca", // Canada
-  "ca", // Canada
-  "ca", // Canada
-  "ca", // Canada
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "us", // United States
-  "fr", // France
-  "fr", // France
+
   "fr", // France
 
+  "ca", // Canada
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "us", // United States
+  "fr", // France
+  "fr", // France
+  "fr", // France
+  "uk", // United Kingdom
+  "au", // Australia
+  "de", // Germany
+  "jp", // Japan
+  "sg", // Singapore
+  "kr", // South Korea
+  "it", // Italy
+  "es", // Spain
+  "in", // India
+  "id", // Indonesia
+  "ph", // Philippines
+  "th", // Thailand
+  "my", // Malaysia
+  "eg", // Egypt
+  "tr", // Turkey
+  "pk", // Pakistan (English speakers, strong internet growth)
+  "bd", // Bangladesh (growing internet users, relevance to global content)
+  "mx", // Mexico (geographical proximity, U.S. ties)
+  "lk", // Sri Lanka
+  "ml", // Mali
+  "bj", // Benin
+  "ug", // Uganda
+  "mm", // Myanmar
+  "no", // Norway
+  "pf", // French Polynesia
+  "np", // Nepal
+  "bf", // Burkina Faso
+  "cd", // Congo, The Democratic Republic of the
+  "bi", // Burundi
+  "gf", // French Guiana
+  "cf", // Central African Republic
+  "hk", // Hong Kong
+  "cg", // Congo
 ];
 
 // Function to select a random user preference
@@ -278,9 +289,19 @@ const OpenBrowser = async (link, username) => {
   }
   const browser = await chromium.launch({
     headless: false,
+    proxy: {
+      server: `${process.env.PROXY_SERVER}:${process.env.PROXY_PORT}`,
+      username: username,
+      password: process.env.PROXY_PASSWORD,
+    },
   });
 
   const context = await newInjectedContext(browser, {
+    // fingerprintOptions: {
+    //   devices: [userPreference.device],
+    //   browsers: [userPreference.browser],
+    //   operatingSystems: [userPreference.os],
+    // },
     fingerprintOptions: {
       devices: [userPreference.device],
       browsers: [userPreference.browser],
@@ -297,7 +318,6 @@ const OpenBrowser = async (link, username) => {
     // add media blockers
     await blockResources(page);
     await page.addInitScript(noisifyScript(noise));
-    await page.goto(link, { waitUntil: "load" });
     console.log(
       "Browser view from -> ",
       timezone,
@@ -306,6 +326,7 @@ const OpenBrowser = async (link, username) => {
       "threads :",
       bots
     );
+    await page.goto(link, { waitUntil: "load" });
     await page.waitForTimeout(7000);
     await performRandomClicks(page);
     await page.waitForTimeout(40000);
@@ -318,15 +339,16 @@ const OpenBrowser = async (link, username) => {
 };
 
 const tasksPoll = async (views) => {
-  const tasks = Array.from({ length: 5 }).map(
+  const tasks = Array.from({ length: Number(bots) ? Number(bots) : 4 }).map(
     () => {
       let location = locations[generateRandomNumber(0, locations.length + 1)];
       const username =
         "qualityser-res-" +
         location +
+        "-sid-" +
         String(generateRandomNumber(10000, 10000000));
 
-      return OpenBrowser("https://www.google.com" , username);
+      return OpenBrowser(url ? url : "https://www.google.com", username);
     }
   );
 
@@ -335,7 +357,7 @@ const tasksPoll = async (views) => {
 
 const RunTasks = async () => {
   let views = 0;
-  for (let i = 0; i < 20000; i++) {
+  for (let i = 0; i < 14534554; i++) {
     views++;
     console.log(views * Number(bots));
     await tasksPoll(views);
