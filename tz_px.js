@@ -27,7 +27,7 @@ export const checkTz = async (username) => {
     const ipDetails = { timezone: response.data.trim() };
     return ipDetails.timezone || undefined;
   } catch (error) {
-    console.error("Error fetching timezone:", error.message);
+    console.error("Error fetching timezone: ", error.message);
     return null;
   }
 };

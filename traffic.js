@@ -319,7 +319,7 @@ const OpenBrowser = async (link, username) => {
     await blockResources(page);
     await page.addInitScript(noisifyScript(noise));
     console.log(
-      "Browser view from -> ",
+      "Browser view from ->",
       timezone,
       "website -> ",
       url,
