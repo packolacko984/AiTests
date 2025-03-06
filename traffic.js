@@ -329,7 +329,7 @@ const OpenBrowser = async (link, username) => {
     await page.goto(link, { waitUntil: "load" });
     await page.waitForTimeout(7000);
     await performRandomClicks(page);
-    await page.waitForTimeout(40000);
+    await page.waitForTimeout(30000);
   } catch (error) {
     console.log(error);
   } finally {
