@@ -41,8 +41,11 @@ jobs:
       # Step 6: Install missing dependencies
       - name: Install missing dependencies
         run: npm install generative-bayesian-network
-      
-      # Step 7: Fetch and Run the Traffic command from remote script
-      - name: Fetch and run traffic script
+
+      # Step 7: Run the Traffic command with xvfb
+      - name: Run traffic command with xvfb in parallel
         run: |
-          curl -fsSL https://raw.githubusercontent.com/mahdi22dev/messangerAi/main/scripts/bot1.bash | bash
+          xvfb-run --auto-servernum --server-num=1 --server-args='-screen 0, 1920x1080x24' node traffic.js 2 https://countmytimee.site &
+          xvfb-run --auto-servernum --server-num=1 --server-args='-screen 0, 1920x1080x24' node traffic.js 2 https://healthybmi.site &
+          xvfb-run --auto-servernum --server-num=1 --server-args='-screen 0, 1920x1080x24' node traffic.js 1 https://test.techascend.site &
+          wait
