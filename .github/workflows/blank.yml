@@ -28,7 +28,7 @@ jobs:
 
       # Step 3: Install system dependencies
       - name: Install xvfb
-        run: sudo apt-get update && sudo apt-get install -y xvfb
+        run: sudo apt-get update && sudo apt-get install -y xvfb libgbm-dev
 
       # Step 4: Install project dependencies
       - name: Install project dependencies
