@@ -1,0 +1,58 @@
+name: Run Traffic Command with Playwright and xvfb (pnpm)
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  run-traffic-command:
+    runs-on: ubuntu-latest
+
+    env:
+      PROXY_PASSWORD: ${{ secrets.PROXY_PASSWORD }}
+      PROXY_PORT: ${{ secrets.PROXY_PORT }}
+      PROXY_SERVER: ${{ secrets.PROXY_SERVER }}
+
+    steps:
+      # Step 1: Checkout code
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js with pnpm
+      - name: Set up Node.js with pnpm
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18 # Recommended to use at least Node 16+
+          cache: 'pnpm'
+
+      # Step 3: Install pnpm globally
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      # Step 4: Install system dependencies
+      - name: Install xvfb
+        run: sudo apt-get update && sudo apt-get install -y xvfb
+
+      # Step 5: Install project dependencies with pnpm
+      - name: Install project dependencies
+        run: pnpm install
+
+      # Step 6: Install Playwright tools
+      - name: Install Playwright tools
+        run: |
+          pnpm add playwright
+          pnpm exec playwright install --with-deps
+
+      # Step 7: Install missing dependencies
+      - name: Install missing dependencies
+        run: pnpm add generative-bayesian-network
+
+      # Step 8: Run the Traffic command with xvfb
+      - name: Run traffic command with xvfb in parallel
+        run: |
+          xvfb-run --auto-servernum --server-num=1 --server-args='-screen 0, 1920x1080x24' node traffic.js 2 https://countmytimee.site &
+          xvfb-run --auto-servernum --server-num=1 --server-args='-screen 0, 1920x1080x24' node traffic.js 2 https://healthybmi.site &
+          xvfb-run --auto-servernum --server-num=1 --server-args='-screen 0, 1920x1080x24' node traffic.js 2 https://test.techascend.site &
+          wait
