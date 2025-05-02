@@ -24,11 +24,11 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18 # Specify your required Node.js version
+          node-version: 16 # Specify your required Node.js version
 
       # Step 3: Install system dependencies
       - name: Install xvfb
-        run: sudo apt-get update && sudo apt-get install -y xvfb libgbm-dev
+        run: sudo apt-get update && sudo apt-get install -y xvfb
 
       # Step 4: Install project dependencies
       - name: Install project dependencies
@@ -36,7 +36,7 @@ jobs:
 
       # Step 5: Install Playwright tools
       - name: Install Playwright tools
-        run: npx playwright install --with-deps
+        run: npx playwright install
 
       # Step 6: Install missing dependencies
       - name: Install missing dependencies
@@ -45,7 +45,7 @@ jobs:
       # Step 7: Run the Traffic command with xvfb
       - name: Run traffic command with xvfb in parallel
         run: |
-          xvfb-run --auto-servernum --server-num=1 --server-args='-screen 0, 1920x1080x24' node traffic.js 3 https://countmytimee.site &
-          xvfb-run --auto-servernum --server-num=1 --server-args='-screen 0, 1920x1080x24' node traffic.js 3 https://healthybmi.site &
-          xvfb-run --auto-servernum --server-num=1 --server-args='-screen 0, 1920x1080x24' node traffic.js 1 https://test.techascend.site &
+          xvfb-run --auto-servernum --server-num=1 --server-args='-screen 0, 1920x1080x24' node traffic.js 2 https://countmytimee.site &
+          xvfb-run --auto-servernum --server-num=1 --server-args='-screen 0, 1920x1080x24' node traffic.js 2 https://healthybmi.site &
+          xvfb-run --auto-servernum --server-num=1 --server-args='-screen 0, 1920x1080x24' node traffic.js 2 https://test.techascend.site &
           wait
